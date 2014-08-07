@@ -23,12 +23,15 @@ def getTweets(searchTerm):
 		                       rpp=100,
 		                       result_type="recent",
 		                       include_entities=True,
-		                       lang="en").items(10):
+		                       lang="en",
+		                       geocode="39.5,-98.35,1500mi").items(10):
 		tweetDict = {}
 		tweetDict["time"] = str(t.created_at)
 		tweetDict["text"] = t.text
 		tweetDict["sent"] = classifier(t.text)
+		tweetDict["userlocation"] = t.user.location
 		tweetDict["retweetcount"] = t.retweet_count
+		tweetDict["favoritecount"] = t.favorite_count
 		results.append(tweetDict)
 	return json.dumps(results)
 
