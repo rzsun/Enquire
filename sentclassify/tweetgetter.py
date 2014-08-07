@@ -1,8 +1,12 @@
 import tweepy
 import json
 import time
+from sentclassifier import sentClassifier
 
 def getTweets(searchTerm):
+	# TODO: check if classifier has been loaded
+	classifier = sentClassifier(True, 'classifier.pickle')
+
 	# Authentication details. To  obtain these visit dev.twitter.com
 	consumer_key = '6F86k5I5SlRJhdCe2sPNIq5Lf'
 	consumer_secret = 'fgRScFMqnXzEdsRPWWD26eq4AaN0RNNQQA6aE1NS1cWsJchu95'
@@ -21,8 +25,10 @@ def getTweets(searchTerm):
 		                       include_entities=True,
 		                       lang="en").items(10):
 		tweetDict = {}
-		tweetDict["time"] = t.created_at
+		tweetDict["time"] = str(t.created_at)
 		tweetDict["text"] = t.text
+		tweetDict["sent"] = classifier(t.text)
+		tweetDict["retweetcount"] = t.retweet_count
 		results.append(tweetDict)
-	return results
+	return json.dumps(results)
 

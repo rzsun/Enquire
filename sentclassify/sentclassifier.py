@@ -1,6 +1,9 @@
 import nltk.classify.util
 from nltk.classify import NaiveBayesClassifier
 from nltk.corpus import movie_reviews
+import os.path
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+nltk.data.path.append(os.path.join(BASE_DIR, 'nltk_data/'))
 import pickle
 
 class sentClassifier:
