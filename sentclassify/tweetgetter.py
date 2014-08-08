@@ -29,11 +29,14 @@ def getTweets(searchTerm):
 		tweetDict["time"] = str(t.created_at)
 		tweetDict["text"] = t.text
 		tweetDict["username"] = t.user.screen_name
-		tweetDict["sent"] = classifier(t.text)
+		tweetDict["sent"] = classifier(t.text)[0]
+		tweetDict["posindex"] = classifier(t.text)[1]
+		tweetDict["negindex"] = classifier(t.text)[2]
 		tweetDict["coordinates"] = t.coordinates
 		tweetDict["userlocation"] = t.user.location
 		tweetDict["retweetcount"] = t.retweet_count
 		tweetDict["favoritecount"] = t.favorite_count
+		tweetDict["followercount"] = t.user.followers_count
 		results.append(tweetDict)
 	return json.dumps(results)
 

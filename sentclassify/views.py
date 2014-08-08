@@ -3,6 +3,7 @@ from django.template import RequestContext
 from django.http import HttpResponse
 import tweetgetter
 from sentclassifier import sentClassifier
+import json, codecs
 
 def inputInfo(request):
 	return render_to_response("sentclassify/inputinfo.html", {}, context_instance=RequestContext(request))
@@ -13,10 +14,10 @@ def result(request):
 		searchTerm = request.POST.get("searchterm", False)
 		if(searchTerm != False):
 			# for testing
-			import json, codecs
 			result = json.load(open('sampleinfo.json'))
-			# result = tweetgetter.getTweets(searchTerm)
 			return render_to_response("sentclassify/result.html", {"result" : json.dumps(result)}, context_instance=RequestContext(request))
+			# result = tweetgetter.getTweets(searchTerm)
+			# return render_to_response("sentclassify/result.html", {"result" : result}, context_instance=RequestContext(request))
 		else:
 			return render_to_response("sentclassify/inputinfo.html")
 

@@ -21,7 +21,9 @@ class sentClassifier:
     
     # classifies a string    
     def __call__(self, tweetString):
-        return self.classifier.classify(self.word_feats(tweetString.split()))
+        return (self.classifier.classify(self.word_feats(tweetString.split())), 
+            self.classifier.prob_classify(self.word_feats(tweetString.split())).prob("pos"),
+            self.classifier.prob_classify(self.word_feats(tweetString.split())).prob("neg"))
     
     def showMostInformativeFeatures(self, n):
         self.classifier.show_most_informative_features(n)
