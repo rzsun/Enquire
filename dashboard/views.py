@@ -3,7 +3,8 @@ from django.template import RequestContext
 from django.http import HttpResponse
 import tweetgetter
 from sentclassifier import sentClassifier
-import json, codecs
+import json
+from dashboard.models import Tweet
 
 def inputInfo(request):
 	return render_to_response("dashboard/inputinfo.html", {}, context_instance=RequestContext(request))
@@ -12,14 +13,26 @@ def inputInfo(request):
 def result(request):
 	if request.method == "POST":
 		searchTerm = request.POST.get("searchterm", False)
-		if(searchTerm != False):
-			# for testing
-			#result = json.load(open('sampleinfo.json'))
-			#return render_to_response("dashboard/result.html", {"result" : json.dumps(result)}, context_instance=RequestContext(request))
-			result = tweetgetter.getTweets(searchTerm)
-			return render_to_response("dashboard/result.html", {"result" : result}, context_instance=RequestContext(request))
-		else:
-			return render_to_response("dashboard/inputinfo.html")
+		tweetgetter.getTweets(searchTerm)
+	return HttpResponse("Data successfully saved.")
+
+def dashboard(request):
+	results = []
+	for t in Tweet.objects.all():
+		tweetDict = {}
+		tweetDict["time"] = str(t.dateTime)
+		tweetDict["text"] = t.tweetText.encode('utf-8')
+		tweetDict["username"] = t.userName.encode('utf-8')
+		tweetDict["sent"] = t.sentiment.encode('utf-8')
+		tweetDict["posindex"] = t.posProb
+		tweetDict["negindex"] = t.negProb
+		tweetDict["lat"] = t.lat
+		tweetDict["lng"] = t.lng
+		tweetDict["retweetcount"] = t.retweetCount
+		tweetDict["favoritecount"] = t.favoriteCount
+		tweetDict["followercount"] = t.followerCount
+		results.append(tweetDict)
+	return render_to_response("dashboard/dashboard.html", {"result" : json.dumps(results)}, context_instance=RequestContext(request))
 
 # TODO: custom filename parameter
 def createClassifier(request):

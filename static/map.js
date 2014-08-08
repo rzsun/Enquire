@@ -12,31 +12,15 @@ function initialize() {
     window.map = new google.maps.Map(document.getElementById('map-canvas'),
         mapOptions);
 
-	var funcs = [];
-	
-	function createfunc(t) {
-		return function(results, status) {
-			if (status == google.maps.GeocoderStatus.OK) {
-				addMarker(results[0].geometry.location, t);
-		  	}
-      	};
-	}
-
 	for (var i = 0; i < tweets.length; i++) {
-		var t = tweets[i];
-		funcs[i] = createfunc(t);
+		addMarker(new google.maps.LatLng(tweets[i].lat,tweets[i].lng), tweets[i]);
 	}
-
-    for (var i = 0; i < tweets.length; i++) {
-        var t = tweets[i];
-    	geocoder.geocode( { 'address': t.userlocation}, funcs[i]);
-    }
 }
 
 function addMarker(location, t) {
-    var contentString = '<div id="content">' +
-        '<h1>' + t.username + '</h1>' +
-        '<h2>' + t.time + '</h2>' +
+    var contentString = '<div class="mapInfoWindow">' +
+        '<h3>' + t.username + '</h3>' +
+        '<h4>' + t.time + '</h4>' +
         '<p>' + t.text + '</p></div>';
 
 	var pinColor = "";
@@ -45,7 +29,7 @@ function addMarker(location, t) {
 	} else if (t.sent == "neg") {
 		var pinColor = "FE7569";
 	}
-	var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + 		pinColor,
+	var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
         new google.maps.Size(21, 34),
         new google.maps.Point(0,0),
         new google.maps.Point(10, 34));

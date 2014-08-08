@@ -2,6 +2,8 @@ import tweepy
 import json
 import time
 from sentclassifier import sentClassifier
+from dashboard.models import Tweet
+from pygeocoder import Geocoder
 
 def getTweets(searchTerm):
 	# TODO: check if classifier has been loaded
@@ -24,19 +26,19 @@ def getTweets(searchTerm):
 		                       result_type="recent",
 		                       include_entities=True,
 		                       lang="en",
-		                       geocode="39.5,-98.35,1500mi").items(10):
-		tweetDict = {}
-		tweetDict["time"] = str(t.created_at)
-		tweetDict["text"] = t.text
-		tweetDict["username"] = t.user.screen_name
-		tweetDict["sent"] = classifier(t.text)[0]
-		tweetDict["posindex"] = classifier(t.text)[1]
-		tweetDict["negindex"] = classifier(t.text)[2]
-		tweetDict["coordinates"] = t.coordinates
-		tweetDict["userlocation"] = t.user.location
-		tweetDict["retweetcount"] = t.retweet_count
-		tweetDict["favoritecount"] = t.favorite_count
-		tweetDict["followercount"] = t.user.followers_count
-		results.append(tweetDict)
-	return json.dumps(results)
-
+		                       geocode="39.5,-98.35,1500mi").items(5):
+		myTweet = Tweet()
+		myTweet.tweetText = t.text
+		myTweet.sentiment = classifier(t.text)[0]
+		myTweet.userName = t.user.screen_name
+		myTweet.posProb = classifier(t.text)[1]
+		myTweet.negProb = classifier(t.text)[2]
+		myTweet.dateTime = t.created_at
+		if(t.user.location is not None):
+			locationCoords = Geocoder.geocode(t.user.location)
+			myTweet.lat = locationCoords[0].coordinates[0]
+			myTweet.lng = locationCoords[0].coordinates[1]
+		myTweet.retweetCount = t.retweet_count
+		myTweet.favoriteCount = t.favorite_count
+		myTweet.followerCount = t.user.followers_count
+		myTweet.save()
