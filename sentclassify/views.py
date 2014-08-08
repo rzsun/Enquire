@@ -12,8 +12,11 @@ def result(request):
 	if request.method == "POST":
 		searchTerm = request.POST.get("searchterm", False)
 		if(searchTerm != False):
-			result = tweetgetter.getTweets(searchTerm)
-			return render_to_response("sentclassify/result.html", {"result" : result}, context_instance=RequestContext(request))
+			# for testing
+			import json, codecs
+			result = json.load(open('sampleinfo.json'))
+			# result = tweetgetter.getTweets(searchTerm)
+			return render_to_response("sentclassify/result.html", {"result" : json.dumps(result)}, context_instance=RequestContext(request))
 		else:
 			return render_to_response("sentclassify/inputinfo.html")
 
