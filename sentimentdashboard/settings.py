@@ -1,5 +1,5 @@
 """
-Django settings for hackathon project.
+Django settings for sentimentdashboard project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'kks7c!bbtbs=51ri8cdfg2*0_$cwm4@ztgelg_fk$sz^lhpjm7'
+SECRET_KEY = 'r$ow)o1bl7!1ai)lh5)d2mq2)x38dcv0xy1cq-!plh0-qnil!p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -26,8 +26,6 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Templates
-TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 # Application definition
 
@@ -38,7 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'sentclassify',
+    'dashboard',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -50,9 +48,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'hackathon.urls'
+ROOT_URLCONF = 'sentimentdashboard.urls'
 
-WSGI_APPLICATION = 'hackathon.wsgi.application'
+WSGI_APPLICATION = 'sentimentdashboard.wsgi.application'
 
 
 # Database
@@ -87,5 +85,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-
+# Templates
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 # TODO: add classifier setting parameters (path and bool)
