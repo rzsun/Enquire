@@ -13,8 +13,13 @@ def inputInfo(request):
 def result(request):
 	if request.method == "POST":
 		searchTerm = request.POST.get("searchterm", False)
-		tweetgetter.getTweets(searchTerm)
-	return HttpResponse("Data successfully saved.")
+		numTweets = request.POST.get("searchterm", False)
+		if(searchTerm is not False and numTweets is not False):
+			tweetgetter.getTweets(searchTerm)
+			return HttpResponse("Data successfully saved.")
+		else:
+			return HttpResponse("Error entered incorrectly.")
+	
 
 def dashboard(request):
 	results = []

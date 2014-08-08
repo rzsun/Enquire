@@ -11,9 +11,10 @@ class Tweet(models.Model):
         MaxValueValidator(1.0)])
     dateTime = models.DateTimeField()
     lat = models.FloatField(validators = [MinValueValidator(-90.0),
-        MaxValueValidator(90.0)])
+        MaxValueValidator(90.0)], null=True)
     lng = models.FloatField(validators = [MinValueValidator(-180.0),
-        MaxValueValidator(180.0)])
+        MaxValueValidator(180.0)], null=True)
     retweetCount = models.IntegerField()
     favoriteCount = models.IntegerField()
     followerCount = models.IntegerField()
+
