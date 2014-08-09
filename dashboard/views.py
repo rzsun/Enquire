@@ -36,6 +36,7 @@ def dashboard(request):
 		tweetDict["retweetcount"] = t.retweetCount
 		tweetDict["favoritecount"] = t.favoriteCount
 		tweetDict["followercount"] = t.followerCount
+		tweetDict["chartKey"] = t.chartKey
 		results.append(tweetDict)
 	return render_to_response("dashboard/dashboard.html", {"result" : json.dumps(results)}, context_instance=RequestContext(request))
 
