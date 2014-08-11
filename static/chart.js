@@ -13,7 +13,7 @@ for (i = 0; i < tweets.length; i++) {
 	    numNeg++;
 	}
 	areaChartData[i + 1] = [tweets[i].time, parseFloat(tweets[i].posindex.toFixed(2)), parseFloat(tweets[i].negindex.toFixed(2))];
-	scatterChartData[i + 1] = [(tweets[i].posindex - tweets[i].negindex), tweets[i].followercount];
+	scatterChartData[i + 1] = [parseFloat((tweets[i].posindex - tweets[i].negindex).toFixed(2)), tweets[i].followercount];
 }
 
 function drawPieChart() {
