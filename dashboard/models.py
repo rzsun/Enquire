@@ -17,4 +17,4 @@ class Tweet(models.Model):
     retweetCount = models.IntegerField()
     favoriteCount = models.IntegerField()
     followerCount = models.IntegerField()
-
+    chartKey = models.CharField(max_length=10)

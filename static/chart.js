@@ -72,7 +72,83 @@ function drawScatterChart() {
     chart.draw(data, options);
 }
 
+function drawComparisonChart() {
+	var numPosList = new Array();
+	var numNegList = new Array();
+
+	// get all chart keys
+	for(var i = 0; i < tweets.length; i++) {
+		var chartKey = tweets[i].chartKey;
+		if(!(chartKey in numPosList)) {
+		    numPosList[chartKey] = 0;
+		}
+		if(!(chartKey in numNegList)) {
+		    numNegList[chartKey] = 0;
+		}
+	}
+	numPosList["Others"] = 0;
+	numNegList["Others"] = 0;
+
+	if(numPosList.length != numNegList.length) {
+		throw { name: 'FatalError', message: 'Number of items of both charts are different, should not happen!' };
+	}
+
+	// count based on chart keys
+	for(var i = 0; i < tweets.length; i++) {
+		var chartKey = tweets[i].chartKey;
+		if(tweets[i].sent == "pos") {
+		    if(chartKey in numPosList) {
+		        numPosList[chartKey]++;
+		    } else {
+		        numPosList["Others"]++;
+		    }
+		} else if(tweets[i].sent == "neg") {
+		    if(chartKey in numNegList) {
+		        numNegList[chartKey]++;
+		    } else {
+		        numNegList["Others"]++;
+		    }
+		}
+	}
+	
+	var dataArray = new Array();
+    dataArray.push(['Company', 'Percentage']);
+    for(var key in numPosList) {
+        var percentage = parseInt(numPosList[key]) / (parseInt(numPosList[key]) + parseInt(numNegList[key]));
+        dataArray.push([key, percentage]);
+    }
+    var data = google.visualization.arrayToDataTable(dataArray);
+    var options = {
+    	title: 'Positive Sentiment Comparison',
+        is3D: true,
+    	backgroundColor: '#F0F0F0',
+        pieSliceText: 'label',
+        colors: ['#7BE091', '#9CD5A8', '#74A67F', '#438651', '#52D06E'],
+    };
+    var chart = new google.visualization.PieChart(document.getElementById('comparisonchart1'));
+    chart.draw(data, options);
+    
+    var dataArray2 = new Array();
+    dataArray2.push(['Company', 'Percentage']);
+    for(var key in numNegList) {
+        var percentage = parseInt(numNegList[key]) / (parseInt(numPosList[key]) + parseInt(numNegList[key]));
+        dataArray.push([key, percentage]);
+    }
+    var data2 = google.visualization.arrayToDataTable(dataArray);
+    var options2 = {
+        title: 'Negative Sentiment Comparison',
+        is3D: true,
+        backgroundColor: '#F0F0F0',
+        pieSliceText: 'label',
+        colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
+    };
+    var chart2 = new google.visualization.PieChart(document.getElementById('comparisonchart2'));
+    chart2.draw(data2, options2);
+}
+
+
 google.load("visualization", "1", {packages: ["corechart"]});
 google.setOnLoadCallback(drawScatterChart);
 google.setOnLoadCallback(drawPieChart);
 google.setOnLoadCallback(drawAreaChart);
+google.setOnLoadCallback(drawComparisonChart);

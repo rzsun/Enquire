@@ -30,7 +30,7 @@ def getTweets(searchTerm):
 		                       result_type="recent",
 		                       include_entities=True,
 		                       lang="en",
-		                       geocode="39.5,-98.35,1500mi").items(300):
+		                       geocode="39.5,-98.35,1500mi").items(75):
 		myTweet = Tweet()
 		myTweet.tweetText = t.text
 		myTweet.sentiment = classifier(t.text)[0]
@@ -52,5 +52,14 @@ def getTweets(searchTerm):
 		myTweet.retweetCount = t.retweet_count
 		myTweet.favoriteCount = t.favorite_count
 		myTweet.followerCount = t.user.followers_count
+		#parse the text and search term to get the key for the pie chart
+		myTweet.chartKey = "Others"
+		terms = searchTerm.split()
+		for term in terms:
+			print(term)
+			if t.text.find(term) is not -1:
+				myTweet.chartKey = term
+				break
+
 		print(t.text)
 		myTweet.save()
