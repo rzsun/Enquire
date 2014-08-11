@@ -12,7 +12,7 @@ for (i = 0; i < tweets.length; i++) {
 	if (tweets[i].sent == "neg") {
 	    numNeg++;
 	}
-	areaChartData[i + 1] = [tweets[i].time, tweets[i].posindex, tweets[i].negindex];
+	areaChartData[i + 1] = [tweets[i].time, parseFloat(tweets[i].posindex.toFixed(2)), parseFloat(tweets[i].negindex.toFixed(2))];
 	scatterChartData[i + 1] = [(tweets[i].posindex - tweets[i].negindex), tweets[i].followercount];
 }
 
@@ -25,7 +25,8 @@ function drawPieChart() {
     var options = {
         title: 'Overall Sentiment',
         backgroundColor: '#F0F0F0',
-        colors: ['#FE7569', '#00CC33']
+        colors: ['#FE7569', '#00CC33'],
+        is3D: true
     };
     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
     chart.draw(data, options);
@@ -33,6 +34,7 @@ function drawPieChart() {
 
 function drawAreaChart() {
     var data = google.visualization.arrayToDataTable(areaChartData);
+    console.log(tweets[2]["time"]);
     var options = {
         title: 'Sentiment Across Time',
         hAxis: {title: 'Time', titleTextStyle: {color: '#333'}, textPosition: 'none'},
@@ -86,8 +88,6 @@ function drawComparisonChart() {
 		    numNegList[chartKey] = 0;
 		}
 	}
-	numPosList["Others"] = 0;
-	numNegList["Others"] = 0;
 
 	if(numPosList.length != numNegList.length) {
 		throw { name: 'FatalError', message: 'Number of items of both charts are different, should not happen!' };
@@ -99,27 +99,43 @@ function drawComparisonChart() {
 		if(tweets[i].sent == "pos") {
 		    if(chartKey in numPosList) {
 		        numPosList[chartKey]++;
-		    } else {
-		        numPosList["Others"]++;
 		    }
 		} else if(tweets[i].sent == "neg") {
 		    if(chartKey in numNegList) {
 		        numNegList[chartKey]++;
-		    } else {
-		        numNegList["Others"]++;
 		    }
 		}
 	}
 	
 	var dataArray = new Array();
-    dataArray.push(['Company', 'Percentage']);
+    dataArray.push(['Product', 'Positive', 'Negative']);
     for(var key in numPosList) {
-        var percentage = parseInt(numPosList[key]) / (parseInt(numPosList[key]) + parseInt(numNegList[key]));
-        dataArray.push([key, percentage]);
+        var posPer = parseInt(numPosList[key]) / (parseInt(numPosList[key]) + parseInt(numNegList[key]));
+        var negPer = parseInt(numNegList[key]) / (parseInt(numPosList[key]) + parseInt(numNegList[key]));
+		posPer = parseFloat(posPer.toFixed(2));
+		negPer = parseFloat(negPer.toFixed(2));
+		
+        dataArray.push([key, posPer, negPer]);
     }
+    
     var data = google.visualization.arrayToDataTable(dataArray);
+
     var options = {
-    	title: 'Positive Sentiment Comparison',
+      title: 'Comparison Chart',
+      vAxis: {maxValue: 1.0, minValue: 0.0},
+      backgroundColor: '#F0F0F0',
+      colors: ['#00CC33', '#FE7569']
+    };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('comparisonchart'));
+
+    chart.draw(data, options);
+      	
+    
+    /*var data = google.visualization.arrayToDataTable(dataArray);
+    var options = {
+    	title: 'Positive 
+    	Sentiment Comparison',
         is3D: true,
     	backgroundColor: '#F0F0F0',
         pieSliceText: 'label',
@@ -143,7 +159,7 @@ function drawComparisonChart() {
         colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
     };
     var chart2 = new google.visualization.PieChart(document.getElementById('comparisonchart2'));
-    chart2.draw(data2, options2);
+    chart2.draw(data2, options2);*/
 }
 
 

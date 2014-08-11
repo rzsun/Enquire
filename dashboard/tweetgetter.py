@@ -52,14 +52,7 @@ def getTweets(searchTerm):
 		myTweet.retweetCount = t.retweet_count
 		myTweet.favoriteCount = t.favorite_count
 		myTweet.followerCount = t.user.followers_count
-		#parse the text and search term to get the key for the pie chart
-		myTweet.chartKey = "Others"
-		terms = searchTerm.split()
-		for term in terms:
-			print(term)
-			if t.text.find(term) is not -1:
-				myTweet.chartKey = term
-				break
+		myTweet.chartKey = searchTerm
 
 		print(t.text)
 		myTweet.save()
