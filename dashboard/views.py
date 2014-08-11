@@ -9,6 +9,9 @@ from dashboard.models import Tweet
 def inputInfo(request):
 	return render_to_response("dashboard/inputinfo.html", {}, context_instance=RequestContext(request))
 	
+def home(request):
+	return render_to_response("dashboard/home.html", {}, context_instance=RequestContext(request))
+	
 # TODO: change result to JSON
 def result(request):
 	if request.method == "POST":

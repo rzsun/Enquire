@@ -1,5 +1,18 @@
-<form action="{% url 'result' %}" method="post">
+{% extends "dashboard/base.html" %}
+{% load staticfiles %}
+{% block content %}
+
+<div id="landing">
+
+<div class="container mainlanding">
+<div class= "jumbotron">
+	<p>Enter your search term below:</p>
+	<form action="{% url 'result' %}" method="post">
 {% csrf_token %}
 	<input type="text" name="searchterm"/>
 	<input type="submit" value="Submit"/>
 </form>
+</div>
+
+</div>
+{% endblock %}

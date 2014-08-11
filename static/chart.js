@@ -5,6 +5,12 @@ areaChartData[0] = ['Time', 'Positive', 'Negative'];
 var scatterChartData = [];
 scatterChartData[0] = ['Polarity', 'Followers'];
 
+var scatterChartData2 = [];
+scatterChartData2[0] = ['Polarity', 'Retweets'];
+
+var scatterChartData3 = [];
+scatterChartData3[0] = ['Polarity', 'Favorites'];
+
 for (i = 0; i < tweets.length; i++) {
 	if (tweets[i].sent == "pos") {
 	    numPos++;
@@ -14,6 +20,8 @@ for (i = 0; i < tweets.length; i++) {
 	}
 	areaChartData[i + 1] = [tweets[i].time, parseFloat(tweets[i].posindex.toFixed(2)), parseFloat(tweets[i].negindex.toFixed(2))];
 	scatterChartData[i + 1] = [parseFloat((tweets[i].posindex - tweets[i].negindex).toFixed(2)), tweets[i].followercount];
+	scatterChartData2[i + 1] = [parseFloat((tweets[i].posindex - tweets[i].negindex).toFixed(2)), tweets[i].retweetcount];
+	scatterChartData3[i + 1] = [parseFloat((tweets[i].posindex - tweets[i].negindex).toFixed(2)), tweets[i].favoritecount];
 }
 
 function drawPieChart() {
@@ -25,8 +33,7 @@ function drawPieChart() {
     var options = {
         title: 'Overall Sentiment',
         backgroundColor: '#F0F0F0',
-        colors: ['#FE7569', '#00CC33'],
-        is3D: true
+        colors: ['#FE7569', '#00CC33']
     };
     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
     chart.draw(data, options);
@@ -71,6 +78,62 @@ function drawScatterChart() {
     };
 
     var chart = new google.visualization.ScatterChart(document.getElementById('scatterchart'));
+    chart.draw(data, options);
+}
+
+function drawScatterChart2() {
+    var data = google.visualization.arrayToDataTable(scatterChartData2);
+
+    var options = {
+        title: 'Polarity vs. Retweets',
+        hAxis: {
+        	title: 'Polarity',
+        	minValue: 0,
+        	maxValue: 1,
+        	gridlines: {count : 0}
+        },
+        vAxis: {
+		    title: 'Retweets', 
+		    minValue: 0, 
+		    maxValue: 30000,
+		    gridlines: {count : 0},
+		    logScale: true
+        },
+        legend: 'none',
+        backgroundColor: '#F0F0F0',
+        pointSize: 3,
+        colors: ['#ff9999'],
+    };
+
+    var chart = new google.visualization.ScatterChart(document.getElementById('scatterchart2'));
+    chart.draw(data, options);
+}
+
+function drawScatterChart3() {
+    var data = google.visualization.arrayToDataTable(scatterChartData3);
+
+    var options = {
+        title: 'Polarity vs. Favorites',
+        hAxis: {
+        	title: 'Polarity',
+        	minValue: 0,
+        	maxValue: 1,
+        	gridlines: {count : 0}
+        },
+        vAxis: {
+		    title: 'Favorites', 
+		    minValue: 0, 
+		    maxValue: 30000,
+		    gridlines: {count : 0},
+		    logScale: true
+        },
+        legend: 'none',
+        backgroundColor: '#F0F0F0',
+        pointSize: 3,
+        colors: ['#fecc66'],
+    };
+
+    var chart = new google.visualization.ScatterChart(document.getElementById('scatterchart3'));
     chart.draw(data, options);
 }
 
@@ -131,40 +194,13 @@ function drawComparisonChart() {
 
     chart.draw(data, options);
       	
-    
-    /*var data = google.visualization.arrayToDataTable(dataArray);
-    var options = {
-    	title: 'Positive 
-    	Sentiment Comparison',
-        is3D: true,
-    	backgroundColor: '#F0F0F0',
-        pieSliceText: 'label',
-        colors: ['#7BE091', '#9CD5A8', '#74A67F', '#438651', '#52D06E'],
-    };
-    var chart = new google.visualization.PieChart(document.getElementById('comparisonchart1'));
-    chart.draw(data, options);
-    
-    var dataArray2 = new Array();
-    dataArray2.push(['Company', 'Percentage']);
-    for(var key in numNegList) {
-        var percentage = parseInt(numNegList[key]) / (parseInt(numPosList[key]) + parseInt(numNegList[key]));
-        dataArray.push([key, percentage]);
-    }
-    var data2 = google.visualization.arrayToDataTable(dataArray);
-    var options2 = {
-        title: 'Negative Sentiment Comparison',
-        is3D: true,
-        backgroundColor: '#F0F0F0',
-        pieSliceText: 'label',
-        colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
-    };
-    var chart2 = new google.visualization.PieChart(document.getElementById('comparisonchart2'));
-    chart2.draw(data2, options2);*/
 }
 
 
 google.load("visualization", "1", {packages: ["corechart"]});
 google.setOnLoadCallback(drawScatterChart);
+google.setOnLoadCallback(drawScatterChart2);
+google.setOnLoadCallback(drawScatterChart3);
 google.setOnLoadCallback(drawPieChart);
 google.setOnLoadCallback(drawAreaChart);
 google.setOnLoadCallback(drawComparisonChart);
