@@ -10,4 +10,4 @@ pygeocoder==1.2.5
 requests==2.3.0
 static3==0.5.1
 tweepy==2.3.0
-wsgiref==0.1.2s
+wsgiref==0.1.2
