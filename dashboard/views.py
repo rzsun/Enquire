@@ -11,6 +11,9 @@ def inputInfo(request):
 	
 def home(request):
 	return render_to_response("dashboard/home.html", {}, context_instance=RequestContext(request))
+
+def about(request):
+	return render_to_response("dashboard/about.html", {}, context_instance=RequestContext(request))
 	
 # TODO: change result to JSON
 def result(request):

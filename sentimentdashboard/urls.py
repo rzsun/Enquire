@@ -9,5 +9,6 @@ urlpatterns = patterns('',
     url(r'^dashboard$', 'dashboard.views.dashboard', name='dashboard'),
     url(r'^home$', 'dashboard.views.home', name='home'),
     url(r'^createclassifier$', 'dashboard.views.createClassifier', name='createClassifier'),
+    url(r'^about$', 'dashboard.views.about', name='about'),
     url(r'^admin/', include(admin.site.urls)),
 )

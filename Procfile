@@ -1,0 +1,1 @@
+web: gunicorn sentimentdashboard.wsgi --log-file -
