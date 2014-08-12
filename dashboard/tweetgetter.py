@@ -32,9 +32,9 @@ def getTweets(searchTerm):
 		                       lang="en",
 		                       geocode="39.5,-98.35,1500mi").items(75):
 		myTweet = Tweet()
-		myTweet.tweetText = t.text
-		myTweet.sentiment = classifier(t.text)[0]
-		myTweet.userName = t.user.screen_name
+		myTweet.tweetText = t.text.encode('utf-8')
+		myTweet.sentiment = classifier(t.text)[0].encode('utf-8')
+		myTweet.userName = t.user.screen_name.encode('utf-8')
 		myTweet.posProb = classifier(t.text)[1]
 		myTweet.negProb = classifier(t.text)[2]
 		myTweet.dateTime = t.created_at
@@ -52,7 +52,5 @@ def getTweets(searchTerm):
 		myTweet.retweetCount = t.retweet_count
 		myTweet.favoriteCount = t.favorite_count
 		myTweet.followerCount = t.user.followers_count
-		myTweet.chartKey = searchTerm
-
-		print(t.text)
+		myTweet.chartKey = searchTerm.encode('utf-8')
 		myTweet.save()
